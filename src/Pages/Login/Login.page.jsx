@@ -55,15 +55,20 @@ const LoginPage = ({
 
   useEffect(() => {
     if (authSuccess) {
-      navigate('/');
+      // navigate('/');
+      // alert('yes');
     }
 
     if (authError) {
-      alert(authMessage);
+      // alert(authMessage);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [authSuccess, authError, authMessage]);
+
+  if (authLoading) {
+    return <p>Loading...</p>;
+  }
 
   return (
     <Main headerTitle='Login' isPrivatePage={false}>

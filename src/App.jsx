@@ -29,7 +29,14 @@ const App = () => {
               </PrivateRoute>
             }
           />
-          <Route path='/login' element={<LoginPage />} />
+          <Route
+            path='/login'
+            element={
+              <PrivateRoute isAuthRoute={false}>
+                <LoginPage />
+              </PrivateRoute>
+            }
+          />
           <Route
             path='/profile'
             element={

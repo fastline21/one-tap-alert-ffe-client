@@ -36,7 +36,7 @@ export const loginUser = (data) => async (dispatch) => {
     };
 
     const res = await axios.post(`/api/auth`, data, config);
-    console.log('Login User -> res.data', res.data);
+
     dispatch({
       type: LOGIN_USER,
       payload: res.data,
@@ -44,16 +44,12 @@ export const loginUser = (data) => async (dispatch) => {
 
     loadUser()(dispatch);
   } catch (error) {
-    const {
-      status_code: statusCode,
-      data: { message },
-    } = error.response.data;
+    console.error(JSON.stringify(error));
 
     dispatch({
       type: AUTH_ERROR,
       payload: {
-        statusCode,
-        message,
+        message: error.response.data.message,
       },
     });
   }
@@ -73,22 +69,17 @@ export const loadUser = () => async (dispatch) => {
 
     const res = await axios.get(`/api/auth`, config);
 
-    console.log('Load User -> res.data', res.data);
     dispatch({
       type: AUTH_USER,
       payload: res.data,
     });
   } catch (error) {
-    const {
-      status_code: statusCode,
-      data: { message },
-    } = error.response.data;
+    console.error(JSON.stringify(error));
 
     dispatch({
       type: AUTH_ERROR,
       payload: {
-        statusCode,
-        message,
+        message: error.response.data.message,
       },
     });
   }
