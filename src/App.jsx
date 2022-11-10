@@ -3,6 +3,8 @@ import { Provider } from 'react-redux';
 
 import configureStore from './configureStore';
 
+import PrivateRoute from 'Routes/PrivateRoute';
+
 import DashboardPage from 'Pages/Dashboard';
 import LoginPage from 'Pages/Login';
 import ProfilePage from 'Pages/Profile';
@@ -19,21 +21,78 @@ const App = () => {
     <Provider store={configureStore}>
       <BrowserRouter>
         <Routes>
-          <Route path='/' element={<DashboardPage />} />
+          <Route
+            path='/'
+            element={
+              <PrivateRoute>
+                <DashboardPage />
+              </PrivateRoute>
+            }
+          />
           <Route path='/login' element={<LoginPage />} />
-          <Route path='/profile' element={<ProfilePage />} />
-          <Route path='/resident' element={<ResidentPage />} />
-          <Route path='/responder' element={<ResponderPage />} />
-          <Route path='/barangay-staff' element={<BarangayStaffPage />} />
-          <Route path='/command-center' element={<CommandCenterPage />} />
-          <Route path='/barangays' element={<BarangaysPage />} />
+          <Route
+            path='/profile'
+            element={
+              <PrivateRoute>
+                <ProfilePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/resident'
+            element={
+              <PrivateRoute>
+                <ResidentPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/responder'
+            element={
+              <PrivateRoute>
+                <ResponderPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/barangay-staff'
+            element={
+              <PrivateRoute>
+                <BarangayStaffPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/command-center'
+            element={
+              <PrivateRoute>
+                <CommandCenterPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/barangays'
+            element={
+              <PrivateRoute>
+                <BarangaysPage />
+              </PrivateRoute>
+            }
+          />
           <Route
             path='/user-registration-approval'
-            element={<UserRegistrationApprovalPage />}
+            element={
+              <PrivateRoute>
+                <UserRegistrationApprovalPage />
+              </PrivateRoute>
+            }
           />
           <Route
             path='/request-backup-support'
-            element={<RequestBackupSupportPage />}
+            element={
+              <PrivateRoute>
+                <RequestBackupSupportPage />
+              </PrivateRoute>
+            }
           />
         </Routes>
       </BrowserRouter>

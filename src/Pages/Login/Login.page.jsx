@@ -6,13 +6,31 @@ import {
   TextField,
   Button,
 } from '@mui/material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 
 import Main from 'Containers/Main';
 
 import Logo from 'Assets/Images/logo.png';
 
-const LoginPage = () => {
+import { loginUser } from 'Services/Actions/auth.action';
+
+import { USER_TYPES } from 'Constants/user_types';
+
+const LoginPage = ({
+  authState: {
+    auth,
+    loading: authLoading,
+    success: authSuccess,
+    error: authError,
+    message: authMessage,
+  },
+  loginUser,
+}) => {
+  const navigate = useNavigate();
+
   const initialFormInput = {
     username: null,
     password: null,
@@ -27,10 +45,25 @@ const LoginPage = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    alert(JSON.stringify(formInput));
+    loginUser({
+      ...formInput,
+      user_type_ids: [USER_TYPES.BARANGAY_STAFF, USER_TYPES.COMMAND_CENTER],
+    });
 
     setFormInput(initialFormInput);
   };
+
+  useEffect(() => {
+    if (authSuccess) {
+      navigate('/');
+    }
+
+    if (authError) {
+      alert(authMessage);
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authSuccess, authError, authMessage]);
 
   return (
     <Main headerTitle='Login' isPrivatePage={false}>
@@ -87,4 +120,15 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+LoginPage.propTypes = {
+  authState: PropTypes.object.isRequired,
+  loginUser: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  authState: state.authState,
+});
+
+export default connect(mapStateToProps, {
+  loginUser,
+})(LoginPage);

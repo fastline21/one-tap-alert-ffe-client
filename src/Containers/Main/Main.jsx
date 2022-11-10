@@ -38,6 +38,8 @@ const Main = ({ children, headerTitle, isPrivatePage = true }) => {
     navigate('/profile');
   };
 
+  const handleLogout = () => {};
+
   return (
     <HelmetProvider>
       <Helmet>
@@ -104,7 +106,7 @@ const Main = ({ children, headerTitle, isPrivatePage = true }) => {
               onClose={handleMenuClose}
             >
               <MenuItem onClick={() => handleProfile()}>Profile</MenuItem>
-              <MenuItem /*onClick={handleMenuClose}*/>My account</MenuItem>
+              <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
             </Menu>
             <Sidebar />
           </>
