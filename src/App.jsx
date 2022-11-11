@@ -15,6 +15,7 @@ import CommandCenterPage from 'Pages/CommandCenter';
 import BarangaysPage from 'Pages/Barangays';
 import UserRegistrationApprovalPage from 'Pages/UserRegistrationApproval';
 import RequestBackupSupportPage from 'Pages/RequestBackupSupport/RequestBackupSupport.page';
+import NotFoundPage from 'Pages/NotFound/NotFound.page';
 
 const App = () => {
   return (
@@ -94,6 +95,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
+          <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>
     </Provider>
