@@ -1,6 +1,10 @@
 [[redirects]]
   from = "/api"
-  to = ${REACT_APP_SERVER_URL}
+  to = "${REACT_APP_SERVER_URL}"
+
+[[redirects]]
+  from = "/public"
+  to = "${REACT_APP_SERVER_URL}"
 
 [[redirects]]
   from = "/*"
