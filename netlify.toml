@@ -1,9 +1,9 @@
 [[redirects]]
-  from = "/api"
+  from = "/api/*"
   to = "${REACT_APP_SERVER_URL}"
 
 [[redirects]]
-  from = "/public"
+  from = "/public/*"
   to = "${REACT_APP_SERVER_URL}"
 
 [[redirects]]
