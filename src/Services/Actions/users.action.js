@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import {
   USERS_LOADING,
-  USERS_SUCCESS,
+  // USERS_SUCCESS,
   USERS_ERROR,
   USERS_CLEAR_RESPONSE,
   GET_ALL_USERS,

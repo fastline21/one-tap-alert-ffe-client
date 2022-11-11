@@ -21,7 +21,7 @@ const UserRegistrationApprovalPage = ({
   getAllUsersByUserStatusID,
   getUser,
 }) => {
-  const [isShowModal, setIsShowModal] = useState(false);
+  // const [isShowModal, setIsShowModal] = useState(false);
 
   useEffect(() => {
     getAllUsersByUserStatusID(USER_STATUSES.PENDING);
@@ -31,7 +31,7 @@ const UserRegistrationApprovalPage = ({
 
   const handleView = (id) => {
     getUser(id);
-    setIsShowModal(true);
+    // setIsShowModal(true);
   };
 
   if (loading || !users) {
