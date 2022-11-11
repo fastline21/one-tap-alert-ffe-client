@@ -3,15 +3,15 @@ import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import { loadUser } from 'Services/Actions/auth.action';
+import { loadUser, authClearResponse } from 'Services/Actions/auth.action';
 
 import Loading from 'Containers/Loading';
 
 const PrivateRoute = ({
   children,
-  isAuthRoute = true,
-  authState: { auth, success, error, message },
+  authState: { auth, success, error },
   loadUser,
+  authClearResponse,
 }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
@@ -20,10 +20,6 @@ const PrivateRoute = ({
     if (auth) {
       setIsAuth(true);
       setIsLoading(false);
-
-      if (!isAuthRoute) {
-        return <Navigate to='/' />;
-      }
 
       return;
     }
@@ -36,6 +32,7 @@ const PrivateRoute = ({
       return;
     }
 
+    setIsAuth(false);
     setIsLoading(false);
   };
 
@@ -49,35 +46,35 @@ const PrivateRoute = ({
     if (success) {
       setIsAuth(true);
       setIsLoading(false);
+      authClearResponse();
     }
 
     if (error) {
+      setIsAuth(false);
       setIsLoading(false);
+      authClearResponse();
     }
-  }, [success, error, isAuthRoute]);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [success, error]);
 
   if (isLoading) {
     return <Loading />;
   }
 
-  return isAuth ? (
-    isAuthRoute ? (
-      children
-    ) : (
-      <Navigate to='/' />
-    )
-  ) : (
-    <Navigate to='/login' />
-  );
+  return isAuth ? children : <Navigate to='/login' />;
 };
 
 PrivateRoute.propTypes = {
   authState: PropTypes.object.isRequired,
   loadUser: PropTypes.func.isRequired,
+  authClearResponse: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   authState: state.authState,
 });
 
-export default connect(mapStateToProps, { loadUser })(PrivateRoute);
+export default connect(mapStateToProps, { loadUser, authClearResponse })(
+  PrivateRoute
+);

@@ -1,44 +1,39 @@
-import React, { useState } from 'react';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
+import { Box, Toolbar, AppBar, Typography, IconButton } from '@mui/material';
 import {
-  Box,
-  Toolbar,
-  AppBar,
-  Typography,
-  IconButton,
-  Badge,
-  Menu,
-  MenuItem,
-} from '@mui/material';
-import {
-  MoreVert as MoreIcon,
-  Mail as MailIcon,
-  Notifications as NotificationsIcon,
-  AccountCircle as AccountCircle,
-  Menu as MenuIcon,
+  AccountCircle as AccountCircleIcon,
+  Logout as LogoutIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
 import Sidebar from 'Containers/Sidebar';
+import Loading from 'Containers/Loading';
 
-const Main = ({ children, headerTitle, isPrivatePage = true }) => {
+import { logoutUser } from 'Services/Actions/auth.action';
+
+const Main = ({
+  children,
+  headerTitle,
+  isPrivatePage = true,
+  authState: { loading },
+  logoutUser,
+}) => {
   const navigate = useNavigate();
-
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  const handleMenuClose = () => {
-    setIsMenuOpen(false);
-  };
-
-  const handleMenuOpen = () => {
-    setIsMenuOpen(true);
-  };
 
   const handleProfile = () => {
     navigate('/profile');
   };
 
-  const handleLogout = () => {};
+  const handleLogout = () => {
+    logoutUser();
+    navigate('/login');
+  };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   return (
     <HelmetProvider>
@@ -59,55 +54,23 @@ const Main = ({ children, headerTitle, isPrivatePage = true }) => {
                 <Box sx={{ flexGrow: 1 }} />
                 <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                   <IconButton
+                    onClick={() => handleProfile()}
                     size='large'
-                    aria-label='show 4 new mails'
                     color='inherit'
                   >
-                    <Badge badgeContent={4} color='error'>
-                      <MailIcon />
-                    </Badge>
+                    <AccountCircleIcon />
                   </IconButton>
                   <IconButton
+                    onClick={() => handleLogout()}
                     size='large'
-                    aria-label='show 17 new notifications'
                     color='inherit'
-                  >
-                    <Badge badgeContent={17} color='error'>
-                      <NotificationsIcon />
-                    </Badge>
-                  </IconButton>
-                  <IconButton
-                    size='large'
                     edge='end'
-                    aria-label='account of current user'
-                    // aria-controls={menuId}
-                    aria-haspopup='true'
-                    onClick={handleMenuOpen}
-                    color='inherit'
                   >
-                    <AccountCircle />
+                    <LogoutIcon />
                   </IconButton>
                 </Box>
               </Toolbar>
             </AppBar>
-            <Menu
-              // anchorEl={anchorEl}
-              anchorOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              // id={menuId}
-              keepMounted
-              transformOrigin={{
-                vertical: 'top',
-                horizontal: 'right',
-              }}
-              open={isMenuOpen}
-              onClose={handleMenuClose}
-            >
-              <MenuItem onClick={() => handleProfile()}>Profile</MenuItem>
-              <MenuItem onClick={() => handleLogout()}>Logout</MenuItem>
-            </Menu>
             <Sidebar />
           </>
         )}
@@ -120,4 +83,15 @@ const Main = ({ children, headerTitle, isPrivatePage = true }) => {
   );
 };
 
-export default Main;
+Main.propTypes = {
+  authState: PropTypes.object.isRequired,
+  logoutUser: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  authState: state.authState,
+});
+
+export default connect(mapStateToProps, {
+  logoutUser,
+})(Main);

@@ -1,20 +1,18 @@
 import {
-  Backdrop,
   Box,
   Dialog,
   DialogTitle,
   DialogContent,
-  Fade,
   Avatar,
   Typography,
-  DialogContentText,
   DialogActions,
   Button,
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 
-const DialogData = ({ show, hideModal, data, source }) => {
+const DialogDeleteData = ({ show, hideModal, data, source }) => {
   const [open, setOpen] = useState(false);
+
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
@@ -30,11 +28,11 @@ const DialogData = ({ show, hideModal, data, source }) => {
   return (
     <div>
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Subscribe</DialogTitle>
+        <DialogTitle>Remove {source}</DialogTitle>
         <DialogContent>
           <Avatar
             src={`/public/captured-image/${data.captured_image_selfie}`}
-            sx={{ width: 200, height: 200 }}
+            sx={{ width: 200, height: 200, margin: 'auto' }}
           />
           <Typography variant='h6' component='h2'>
             Personal Info
@@ -74,12 +72,11 @@ const DialogData = ({ show, hideModal, data, source }) => {
           </Box>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose}>Cancel</Button>
-          <Button onClick={handleClose}>Subscribe</Button>
+          <Button onClick={handleClose}>Close</Button>
         </DialogActions>
       </Dialog>
     </div>
   );
 };
 
-export default DialogData;
+export default DialogDeleteData;

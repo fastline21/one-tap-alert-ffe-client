@@ -2,7 +2,6 @@ import axios from 'axios';
 
 import {
   AUTH_LOADING,
-  AUTH_SUCCESS,
   AUTH_ERROR,
   AUTH_CLEAR_RESPONSE,
   LOGIN_USER,
@@ -83,4 +82,12 @@ export const loadUser = () => async (dispatch) => {
       },
     });
   }
+};
+
+export const logoutUser = () => (dispatch) => {
+  setLoading()(dispatch);
+
+  dispatch({
+    type: LOGOUT_USER,
+  });
 };

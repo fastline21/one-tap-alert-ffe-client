@@ -12,6 +12,7 @@ import PropTypes from 'prop-types';
 import { useNavigate } from 'react-router-dom';
 
 import Main from 'Containers/Main';
+import Loading from 'Containers/Loading';
 
 import Logo from 'Assets/Images/logo.png';
 
@@ -20,13 +21,7 @@ import { loginUser } from 'Services/Actions/auth.action';
 import { USER_TYPES } from 'Constants/user_types';
 
 const LoginPage = ({
-  authState: {
-    auth,
-    loading: authLoading,
-    success: authSuccess,
-    error: authError,
-    message: authMessage,
-  },
+  authState: { loading, success, error, message },
   loginUser,
 }) => {
   const navigate = useNavigate();
@@ -45,6 +40,7 @@ const LoginPage = ({
 
   const handleSubmit = (event) => {
     event.preventDefault();
+
     loginUser({
       ...formInput,
       user_type_ids: [USER_TYPES.BARANGAY_STAFF, USER_TYPES.COMMAND_CENTER],
@@ -54,20 +50,19 @@ const LoginPage = ({
   };
 
   useEffect(() => {
-    if (authSuccess) {
-      // navigate('/');
-      // alert('yes');
+    if (success) {
+      navigate('/');
     }
 
-    if (authError) {
-      // alert(authMessage);
+    if (error) {
+      alert(message);
     }
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [authSuccess, authError, authMessage]);
+  }, [success, error, message]);
 
-  if (authLoading) {
-    return <p>Loading...</p>;
+  if (loading) {
+    return <Loading />;
   }
 
   return (

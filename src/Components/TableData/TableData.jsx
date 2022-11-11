@@ -13,7 +13,14 @@ import {
 import moment from 'moment';
 import { useState } from 'react';
 
-const TableData = ({ head = [], data = [], source = 'users', view }) => {
+const TableData = ({
+  head = [],
+  data = [],
+  source = 'users',
+  view,
+  edit,
+  remove,
+}) => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
@@ -28,6 +35,14 @@ const TableData = ({ head = [], data = [], source = 'users', view }) => {
 
   const handleView = (id) => {
     view(id);
+  };
+
+  const handleEdit = (id) => {
+    edit(id);
+  };
+
+  const handleRemove = (id) => {
+    remove(id);
   };
 
   return data.length > 0 ? (
@@ -68,6 +83,10 @@ const TableData = ({ head = [], data = [], source = 'users', view }) => {
                   </TableCell>
                   <TableCell>
                     <Button onClick={() => handleView(element.id)}>View</Button>
+                    <Button onClick={() => handleEdit(element.id)}>Edit</Button>
+                    <Button onClick={() => handleRemove(element.id)}>
+                      Delete
+                    </Button>
                   </TableCell>
                 </TableRow>
               ))}

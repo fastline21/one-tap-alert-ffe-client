@@ -4,7 +4,9 @@ import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
 import TableData from 'Components/TableData';
-import DialogData from 'Components/DialogData';
+import DialogViewData from 'Components/DialogViewData';
+import DialogEditData from 'Components/DialogEditData';
+import DialogDeleteData from 'Components/DialogDeleteData';
 
 import Main from 'Containers/Main';
 import Loading from 'Containers/Loading';
@@ -22,7 +24,12 @@ const ResidentPage = ({
   getAllUsersByUserTypeID,
   getUser,
 }) => {
-  const [isShowDialog, setIsShowDialog] = useState(false);
+  const initialShowDialog = {
+    show: false,
+    action: null,
+  };
+
+  const [showDialog, setShowDialog] = useState(initialShowDialog);
 
   useEffect(() => {
     getAllUsersByUserTypeID(USER_TYPES.RESIDENT);
@@ -32,11 +39,30 @@ const ResidentPage = ({
 
   const handleView = (id) => {
     getUser(id);
-    setIsShowDialog(true);
+    setShowDialog({
+      show: true,
+      action: 'View',
+    });
+  };
+
+  const handleEdit = (id) => {
+    getUser(id);
+    setShowDialog({
+      show: true,
+      action: 'Edit',
+    });
+  };
+
+  const handleRemove = (id) => {
+    getUser(id);
+    setShowDialog({
+      show: true,
+      action: 'Remove',
+    });
   };
 
   const handleCloseDialog = () => {
-    setIsShowDialog(false);
+    setShowDialog(initialShowDialog);
   };
 
   if (loading || !users) {
@@ -45,12 +71,28 @@ const ResidentPage = ({
 
   return (
     <Main headerTitle='Resident'>
-      {isShowDialog && (
-        <DialogData
-          show={isShowDialog}
+      {showDialog.show && showDialog.action === 'View' && (
+        <DialogViewData
+          show={showDialog.show}
           data={user}
           hideDialog={() => handleCloseDialog()}
-          source='users'
+          source='User'
+        />
+      )}
+      {showDialog.show && showDialog.action === 'Edit' && (
+        <DialogEditData
+          show={showDialog.show}
+          data={user}
+          hideDialog={() => handleCloseDialog()}
+          source='User'
+        />
+      )}
+      {showDialog.show && showDialog.action === 'Remove' && (
+        <DialogDeleteData
+          show={showDialog.show}
+          data={user}
+          hideDialog={() => handleCloseDialog()}
+          source='User'
         />
       )}
       <Box sx={{ mb: 5 }}>
@@ -61,6 +103,8 @@ const ResidentPage = ({
           head={USERS_HEAD}
           data={users}
           view={(id) => handleView(id)}
+          edit={(id) => handleEdit(id)}
+          remove={(id) => handleRemove(id)}
         />
       </Box>
     </Main>
