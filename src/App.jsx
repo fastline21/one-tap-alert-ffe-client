@@ -17,6 +17,8 @@ import UserRegistrationApprovalPage from 'Pages/UserRegistrationApproval';
 import RequestBackupSupportPage from 'Pages/RequestBackupSupport/RequestBackupSupport.page';
 import NotFoundPage from 'Pages/NotFound/NotFound.page';
 
+console.log(process.env.REACT_APP_SERVER_URL);
+
 const App = () => {
   return (
     <Provider store={configureStore}>
