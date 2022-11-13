@@ -6,3 +6,4 @@ export const USERS_CLEAR_RESPONSE = 'USERS_CLEAR_RESPONSE';
 
 export const GET_ALL_USERS = 'GET_ALL_USERS';
 export const GET_USER = 'GET_USER';
+export const CLEAR_USER = 'CLEAR_USER';

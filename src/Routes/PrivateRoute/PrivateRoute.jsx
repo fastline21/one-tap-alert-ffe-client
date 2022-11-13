@@ -2,10 +2,14 @@ import { useState, useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 import { loadUser, authClearResponse } from 'Services/Actions/auth.action';
 
 import Loading from 'Containers/Loading';
+
+import { USER_TYPES } from 'Constants/user_types';
+import { BARANGAY_STAFF_AUTH } from 'Constants/auth_path';
 
 const PrivateRoute = ({
   children,
@@ -13,8 +17,12 @@ const PrivateRoute = ({
   loadUser,
   authClearResponse,
 }) => {
+  const location = useLocation();
+  const navigate = useNavigate();
+
   const [isLoading, setIsLoading] = useState(true);
   const [isAuth, setIsAuth] = useState(false);
+  const [isUnauth, setIsUnauth] = useState(false);
 
   const authLogin = async () => {
     if (auth) {
@@ -58,8 +66,24 @@ const PrivateRoute = ({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [success, error]);
 
+  useEffect(() => {
+    if (auth?.user_type_id === USER_TYPES.ADMIN) {
+      console.log('auth type', 'admin');
+    }
+
+    if (auth?.user_type_id === USER_TYPES.BARANGAY_STAFF) {
+      if (!BARANGAY_STAFF_AUTH.includes(location.pathname)) {
+        setIsUnauth(true);
+      }
+    }
+  }, [auth, location]);
+
   if (isLoading) {
     return <Loading />;
+  }
+
+  if (isUnauth) {
+    navigate('/unauthorized');
   }
 
   return isAuth ? children : <Navigate to='/login' />;

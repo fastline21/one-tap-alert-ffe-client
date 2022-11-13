@@ -6,3 +6,11 @@ export const REQUEST_BACKUPS_HEAD = [
   'Date Created',
   'Action',
 ];
+export const EMERGENCIES_HEAD = [
+  'ID',
+  'User',
+  'Responder',
+  'Type',
+  'Date Created',
+  'Action',
+];

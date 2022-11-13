@@ -13,10 +13,15 @@ import {
   Dashboard as DashboardIcon,
   House as HouseIcon,
   Support as SupportIcon,
+  Report as ReportIcon,
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
+import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 
-const Sidebar = () => {
+import { USER_TYPES } from 'Constants/user_types';
+
+const Sidebar = ({ authState: { auth } }) => {
   const drawerWidth = 240;
   const navigate = useNavigate();
 
@@ -24,32 +29,9 @@ const Sidebar = () => {
     navigate(link);
   };
 
-  return (
-    <Drawer
-      sx={{
-        width: drawerWidth,
-        flexShrink: 0,
-        '& .MuiDrawer-paper': {
-          width: drawerWidth,
-          boxSizing: 'border-box',
-        },
-      }}
-      variant='permanent'
-      anchor='left'
-    >
-      <Toolbar />
-      <Divider />
-      <List>
-        <ListItemButton onClick={() => handleLink('/')}>
-          <ListItemIcon>
-            <DashboardIcon />
-          </ListItemIcon>
-          <ListItemText primary='Dashboard' />
-        </ListItemButton>
-        <Divider sx={{ my: 1 }} />
-        <ListSubheader component='div' inset>
-          Features
-        </ListSubheader>
+  const AdminRender = () => {
+    return (
+      <>
         <ListItemButton
           onClick={() => handleLink('/user-registration-approval')}
         >
@@ -99,9 +81,140 @@ const Sidebar = () => {
           </ListItemIcon>
           <ListItemText primary='Barangays' />
         </ListItemButton>
+      </>
+    );
+  };
+
+  const BarangayStaffRender = () => {
+    return (
+      <>
+        <ListItemButton
+          onClick={() => handleLink('/resident-ffe-emergency-taps')}
+        >
+          <ListItemIcon>
+            <SupportIcon />
+          </ListItemIcon>
+          <ListItemText primary='Resident FFE Emergency Taps' />
+        </ListItemButton>
+        <Divider sx={{ my: 1 }} />
+        <ListSubheader component='div' inset>
+          Incident Reports
+        </ListSubheader>
+        <ListItemButton onClick={() => handleLink('/fire')}>
+          <ListItemIcon>
+            <ReportIcon />
+          </ListItemIcon>
+          <ListItemText primary='Fire' />
+        </ListItemButton>
+        <ListItemButton onClick={() => handleLink('/flood')}>
+          <ListItemIcon>
+            <ReportIcon />
+          </ListItemIcon>
+          <ListItemText primary='Flood' />
+        </ListItemButton>
+        <ListItemButton onClick={() => handleLink('/earthquake')}>
+          <ListItemIcon>
+            <ReportIcon />
+          </ListItemIcon>
+          <ListItemText primary='Earthquake' />
+        </ListItemButton>
+        <ListItemButton onClick={() => handleLink('/incident-reports')}>
+          <ListItemIcon>
+            <ReportIcon />
+          </ListItemIcon>
+          <ListItemText primary='Overall Reports' />
+        </ListItemButton>
+      </>
+    );
+  };
+
+  const CommandCenterRender = () => {
+    return (
+      <>
+        <ListItemButton
+          onClick={() => handleLink('/resident-ffe-emergency-taps')}
+        >
+          <ListItemIcon>
+            <SupportIcon />
+          </ListItemIcon>
+          <ListItemText primary='Resident FFE Emergency Taps' />
+        </ListItemButton>
+        <Divider sx={{ my: 1 }} />
+        <ListSubheader component='div' inset>
+          Incident Reports
+        </ListSubheader>
+        <ListItemButton onClick={() => handleLink('/fire')}>
+          <ListItemIcon>
+            <ReportIcon />
+          </ListItemIcon>
+          <ListItemText primary='Fire' />
+        </ListItemButton>
+        <ListItemButton onClick={() => handleLink('/flood')}>
+          <ListItemIcon>
+            <ReportIcon />
+          </ListItemIcon>
+          <ListItemText primary='Flood' />
+        </ListItemButton>
+        <ListItemButton onClick={() => handleLink('/earthquake')}>
+          <ListItemIcon>
+            <ReportIcon />
+          </ListItemIcon>
+          <ListItemText primary='Earthquake' />
+        </ListItemButton>
+        <ListItemButton onClick={() => handleLink('/incident-reports')}>
+          <ListItemIcon>
+            <ReportIcon />
+          </ListItemIcon>
+          <ListItemText primary='Overall Reports' />
+        </ListItemButton>
+      </>
+    );
+  };
+
+  return (
+    <Drawer
+      sx={{
+        width: drawerWidth,
+        flexShrink: 0,
+        '& .MuiDrawer-paper': {
+          width: drawerWidth,
+          boxSizing: 'border-box',
+        },
+      }}
+      variant='permanent'
+      anchor='left'
+    >
+      <Toolbar />
+      <Divider />
+      <List>
+        <ListItemButton onClick={() => handleLink('/')}>
+          <ListItemIcon>
+            <DashboardIcon />
+          </ListItemIcon>
+          <ListItemText primary='Dashboard' />
+        </ListItemButton>
+        <Divider sx={{ my: 1 }} />
+        <ListSubheader component='div' inset>
+          Features
+        </ListSubheader>
+        {auth.user_type_id === USER_TYPES.ADMIN && <AdminRender />}
+        {auth.user_type_id === USER_TYPES.BARANGAY_STAFF && (
+          <BarangayStaffRender />
+        )}
+        {auth.user_type_id === USER_TYPES.COMMAND_CENTER && (
+          <CommandCenterRender />
+        )}
       </List>
     </Drawer>
   );
 };
 
-export default Sidebar;
+Sidebar.propTypes = {
+  authState: PropTypes.object.isRequired,
+};
+
+const mapStateToProps = (state) => ({
+  authState: state.authState,
+});
+
+export default connect(mapStateToProps, {})(Sidebar);

@@ -14,10 +14,12 @@ import BarangayStaffPage from 'Pages/BarangayStaff';
 import CommandCenterPage from 'Pages/CommandCenter';
 import BarangaysPage from 'Pages/Barangays';
 import UserRegistrationApprovalPage from 'Pages/UserRegistrationApproval';
-import RequestBackupSupportPage from 'Pages/RequestBackupSupport/RequestBackupSupport.page';
-import NotFoundPage from 'Pages/NotFound/NotFound.page';
-
-console.log(process.env.REACT_APP_SERVER_URL);
+import RequestBackupSupportPage from 'Pages/RequestBackupSupport';
+import NotFoundPage from 'Pages/NotFound';
+import UnauthorizedPage from 'Pages/Unauthorized';
+import EmergencyFirePage from 'Pages/EmergencyFire';
+import EmergencyFloodPage from 'Pages/EmergencyFlood';
+import EmergencyEarthquakePage from 'Pages/EmergencyEarthquake';
 
 const App = () => {
   return (
@@ -97,6 +99,31 @@ const App = () => {
               </PrivateRoute>
             }
           />
+          <Route
+            path='/fire'
+            element={
+              <PrivateRoute>
+                <EmergencyFirePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/flood'
+            element={
+              <PrivateRoute>
+                <EmergencyFloodPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/earthquake'
+            element={
+              <PrivateRoute>
+                <EmergencyEarthquakePage />
+              </PrivateRoute>
+            }
+          />
+          <Route path='/unauthorized' element={<UnauthorizedPage />} />
           <Route path='*' element={<NotFoundPage />} />
         </Routes>
       </BrowserRouter>

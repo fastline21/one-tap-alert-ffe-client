@@ -76,6 +76,20 @@ const TableData = ({
                   {source === 'request-backups' && (
                     <TableCell>{element.emergency_id}</TableCell>
                   )}
+                  {source === 'emergencies' && (
+                    <>
+                      <TableCell>
+                        {element.user.first_name} {element.user.middle_initial}.{' '}
+                        {element.user.last_name}
+                      </TableCell>
+                      <TableCell>
+                        {element.responder.first_name}{' '}
+                        {element.responder.middle_initial}.{' '}
+                        {element.responder.last_name}
+                      </TableCell>
+                      <TableCell>{element.emergency_type.name}</TableCell>
+                    </>
+                  )}
                   <TableCell>
                     {moment(element.date_added).format(
                       'MMMM DD, YYYY - h:mm:ss A'

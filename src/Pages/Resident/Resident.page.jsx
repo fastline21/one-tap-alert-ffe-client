@@ -17,12 +17,21 @@ import { USERS_HEAD } from 'Constants/table_head';
 import {
   getAllUsersByUserTypeID,
   getUser,
+  updateUser,
+  usersClearResponse,
+  clearUser,
 } from 'Services/Actions/users.action';
+import { getAllBarangays } from 'Services/Actions/barangays.action';
 
 const ResidentPage = ({
-  usersState: { users, user, loading },
+  usersState: { users, user, loading, success, error, message },
+  barangaysState: { barangays, loading: barangaysLoading },
   getAllUsersByUserTypeID,
   getUser,
+  getAllBarangays,
+  updateUser,
+  usersClearResponse,
+  clearUser,
 }) => {
   const initialShowDialog = {
     show: false,
@@ -33,6 +42,7 @@ const ResidentPage = ({
 
   useEffect(() => {
     getAllUsersByUserTypeID(USER_TYPES.RESIDENT);
+    getAllBarangays();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -65,7 +75,27 @@ const ResidentPage = ({
     setShowDialog(initialShowDialog);
   };
 
-  if (loading || !users) {
+  const handleSubmitEdit = (data) => {
+    updateUser(data);
+    clearUser();
+  };
+
+  useEffect(() => {
+    if (success) {
+      alert(message);
+      usersClearResponse();
+      getAllUsersByUserTypeID(USER_TYPES.RESIDENT);
+    }
+
+    if (error) {
+      alert(message);
+      usersClearResponse();
+    }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [success, error, message]);
+
+  if (loading) {
     return <Loading />;
   }
 
@@ -82,9 +112,10 @@ const ResidentPage = ({
       {showDialog.show && showDialog.action === 'Edit' && (
         <DialogEditData
           show={showDialog.show}
-          data={user}
+          data={[user, barangays]}
           hideDialog={() => handleCloseDialog()}
           source='User'
+          submit={(data) => handleSubmitEdit(data)}
         />
       )}
       {showDialog.show && showDialog.action === 'Remove' && (
@@ -99,13 +130,15 @@ const ResidentPage = ({
         <Typography variant='h4'>User - Resident</Typography>
       </Box>
       <Box>
-        <TableData
-          head={USERS_HEAD}
-          data={users}
-          view={(id) => handleView(id)}
-          edit={(id) => handleEdit(id)}
-          remove={(id) => handleRemove(id)}
-        />
+        {users && (
+          <TableData
+            head={USERS_HEAD}
+            data={users}
+            view={(id) => handleView(id)}
+            edit={(id) => handleEdit(id)}
+            remove={(id) => handleRemove(id)}
+          />
+        )}
       </Box>
     </Main>
   );
@@ -113,15 +146,25 @@ const ResidentPage = ({
 
 ResidentPage.propTypes = {
   usersState: PropTypes.object.isRequired,
+  barangaysState: PropTypes.object.isRequired,
   getAllUsersByUserTypeID: PropTypes.func.isRequired,
   getUser: PropTypes.func.isRequired,
+  getAllBarangays: PropTypes.func.isRequired,
+  updateUser: PropTypes.func.isRequired,
+  usersClearResponse: PropTypes.func.isRequired,
+  clearUser: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   usersState: state.usersState,
+  barangaysState: state.barangaysState,
 });
 
 export default connect(mapStateToProps, {
   getAllUsersByUserTypeID,
   getUser,
+  getAllBarangays,
+  updateUser,
+  usersClearResponse,
+  clearUser,
 })(ResidentPage);

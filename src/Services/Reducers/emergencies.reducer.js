@@ -1,16 +1,15 @@
 import {
-  USERS_LOADING,
-  USERS_SUCCESS,
-  USERS_ERROR,
-  USERS_CLEAR_RESPONSE,
-  GET_ALL_USERS,
-  GET_USER,
-  CLEAR_USER,
-} from 'Services/Types/users.type';
+  EMERGENCIES_LOADING,
+  EMERGENCIES_SUCCESS,
+  EMERGENCIES_ERROR,
+  EMERGENCIES_CLEAR_RESPONSE,
+  GET_ALL_EMERGENCIES,
+  GET_EMERGENCY,
+} from 'Services/Types/emergencies.type';
 
 const initialState = {
-  users: null,
-  user: null,
+  emergencies: null,
+  emergency: null,
   loading: false,
   success: false,
   error: false,
@@ -20,24 +19,26 @@ const initialState = {
 // eslint-disable-next-line import/no-anonymous-default-export
 export default (state = initialState, action) => {
   switch (action.type) {
-    case GET_ALL_USERS:
+    case GET_ALL_EMERGENCIES:
       return {
         ...state,
-        users: action.payload.users,
+        emergencies: action.payload.emergencies,
         loading: false,
+        success: true,
       };
-    case GET_USER:
+    case GET_EMERGENCY:
       return {
         ...state,
-        user: action.payload.user,
+        emergency: action.payload.emergency,
         loading: false,
+        success: true,
       };
-    case USERS_LOADING:
+    case EMERGENCIES_LOADING:
       return {
         ...state,
         loading: true,
       };
-    case USERS_SUCCESS: {
+    case EMERGENCIES_SUCCESS: {
       return {
         ...state,
         loading: false,
@@ -45,7 +46,7 @@ export default (state = initialState, action) => {
         message: action.payload.message,
       };
     }
-    case USERS_ERROR: {
+    case EMERGENCIES_ERROR: {
       return {
         ...state,
         loading: false,
@@ -53,17 +54,12 @@ export default (state = initialState, action) => {
         message: action.payload.message,
       };
     }
-    case USERS_CLEAR_RESPONSE:
+    case EMERGENCIES_CLEAR_RESPONSE:
       return {
         ...state,
         success: false,
         error: false,
         message: null,
-      };
-    case CLEAR_USER:
-      return {
-        ...state,
-        user: null,
       };
     default:
       return state;
