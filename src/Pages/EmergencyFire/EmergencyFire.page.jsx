@@ -15,23 +15,42 @@ import { EMERGENCIES_HEAD } from 'Constants/table_head';
 import { EMERGENCY_TYPES } from 'Constants/emergency_types';
 import { EMERGENCY_STATUSES } from 'Constants/emergency_statuses';
 
-import { getCurrentEmergencies } from 'Services/Actions/emergencies.action';
+import {
+  getCurrentEmergencies,
+  getEmergency,
+} from 'Services/Actions/emergencies.action';
 
 const EmergencyFirePage = ({
-  emergenciesState: { emergencies, loading },
+  emergenciesState: { emergencies, emergency, loading },
   getCurrentEmergencies,
+  getEmergency,
 }) => {
+  const initialShowDialog = {
+    show: false,
+    action: null,
+  };
+
+  const [showDialog, setShowDialog] = useState(initialShowDialog);
+
   useEffect(() => {
     getCurrentEmergencies({
       status_ids: [
         EMERGENCY_STATUSES.NOT_RESPONDED,
         EMERGENCY_STATUSES.RESPONDED,
       ],
-      type_id: EMERGENCY_TYPES.FIRE,
+      type_id: EMERGENCY_TYPES.FLOOD,
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const handleView = (id) => {
+    getEmergency(id);
+    setShowDialog({
+      show: true,
+      action: 'View',
+    });
+  };
 
   if (loading) {
     return <Loading />;
@@ -48,6 +67,7 @@ const EmergencyFirePage = ({
             head={EMERGENCIES_HEAD}
             data={emergencies}
             source='emergencies'
+            view={(id) => handleView(id)}
           />
         )}
       </Box>
@@ -58,12 +78,14 @@ const EmergencyFirePage = ({
 EmergencyFirePage.propTypes = {
   emergenciesState: PropTypes.object.isRequired,
   getCurrentEmergencies: PropTypes.func.isRequired,
+  getEmergency: PropTypes.func.isRequired,
 };
 
 const mapStateToProps = (state) => ({
   emergenciesState: state.emergenciesState,
 });
 
-export default connect(mapStateToProps, { getCurrentEmergencies })(
-  EmergencyFirePage
-);
+export default connect(mapStateToProps, {
+  getCurrentEmergencies,
+  getEmergency,
+})(EmergencyFirePage);

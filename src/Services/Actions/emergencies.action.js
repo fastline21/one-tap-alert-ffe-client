@@ -49,3 +49,38 @@ export const getCurrentEmergencies = (data) => async (dispatch) => {
     });
   }
 };
+
+/**
+ *
+ * @param {*} data
+ * @returns
+ */
+export const getEmergency = (data) => async (dispatch) => {
+  try {
+    setLoading()(dispatch);
+
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+        // 'x-api-key': process.env.REACT_APP_API_KEY,
+      },
+    };
+
+    const res = await axios.get(`/api/emergencies/${data}`, config);
+    console.log('Success - Emergency:', JSON.stringify(res.data) || res.data);
+
+    dispatch({
+      type: GET_EMERGENCY,
+      payload: res.data,
+    });
+  } catch (error) {
+    console.error('Error - Emergency:', JSON.stringify(error) || error);
+
+    dispatch({
+      type: EMERGENCIES_ERROR,
+      payload: {
+        message: error.response.data.message,
+      },
+    });
+  }
+};
