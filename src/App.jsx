@@ -20,6 +20,8 @@ import UnauthorizedPage from 'Pages/Unauthorized';
 import EmergencyFirePage from 'Pages/EmergencyFire';
 import EmergencyFloodPage from 'Pages/EmergencyFlood';
 import EmergencyEarthquakePage from 'Pages/EmergencyEarthquake';
+import IncidentReportsPage from 'Pages/IncidentReports';
+import ResidentFFEEmergencyTapsPage from 'Pages/ResidentFFEEmergencyTaps';
 
 const App = () => {
   return (
@@ -100,6 +102,14 @@ const App = () => {
             }
           />
           <Route
+            path='/resident-ffe-emergency-taps'
+            element={
+              <PrivateRoute>
+                <ResidentFFEEmergencyTapsPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
             path='/fire'
             element={
               <PrivateRoute>
@@ -120,6 +130,14 @@ const App = () => {
             element={
               <PrivateRoute>
                 <EmergencyEarthquakePage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/incident-reports'
+            element={
+              <PrivateRoute>
+                <IncidentReportsPage />
               </PrivateRoute>
             }
           />

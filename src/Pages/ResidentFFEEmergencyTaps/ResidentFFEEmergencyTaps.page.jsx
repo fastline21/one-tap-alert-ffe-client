@@ -10,7 +10,6 @@ import Main from 'Containers/Main';
 import Loading from 'Containers/Loading';
 
 import { EMERGENCIES_HEAD } from 'Constants/table_head';
-import { EMERGENCY_TYPES } from 'Constants/emergency_types';
 import { EMERGENCY_STATUSES } from 'Constants/emergency_statuses';
 
 import {
@@ -18,7 +17,7 @@ import {
   getEmergency,
 } from 'Services/Actions/emergencies.action';
 
-const EmergencyFirePage = ({
+const ResidentFFEEmergencyTapsPage = ({
   emergenciesState: { emergencies, emergency, loading },
   getCurrentEmergencies,
   getEmergency,
@@ -32,11 +31,7 @@ const EmergencyFirePage = ({
 
   useEffect(() => {
     getCurrentEmergencies({
-      status_ids: [
-        EMERGENCY_STATUSES.NOT_RESPONDED,
-        EMERGENCY_STATUSES.RESPONDED,
-      ],
-      type_id: EMERGENCY_TYPES.FIRE,
+      status_ids: [EMERGENCY_STATUSES.PENDING, EMERGENCY_STATUSES.ONGOING],
     });
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -59,7 +54,7 @@ const EmergencyFirePage = ({
   }
 
   return (
-    <Main headerTitle='Fire'>
+    <Main headerTitle='Resident FFE Emergency Taps'>
       {showDialog.show && showDialog.action === 'View' && (
         <DialogViewData
           show={showDialog.show}
@@ -69,7 +64,7 @@ const EmergencyFirePage = ({
         />
       )}
       <Box sx={{ mb: 5 }}>
-        <Typography variant='h4'>Emergency - Fire</Typography>
+        <Typography variant='h4'>Resident FFE Emergency Taps</Typography>
       </Box>
       <Box>
         {emergencies && (
@@ -85,7 +80,7 @@ const EmergencyFirePage = ({
   );
 };
 
-EmergencyFirePage.propTypes = {
+ResidentFFEEmergencyTapsPage.propTypes = {
   emergenciesState: PropTypes.object.isRequired,
   getCurrentEmergencies: PropTypes.func.isRequired,
   getEmergency: PropTypes.func.isRequired,
@@ -98,4 +93,4 @@ const mapStateToProps = (state) => ({
 export default connect(mapStateToProps, {
   getCurrentEmergencies,
   getEmergency,
-})(EmergencyFirePage);
+})(ResidentFFEEmergencyTapsPage);

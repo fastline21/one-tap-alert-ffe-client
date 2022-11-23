@@ -10,13 +10,13 @@ import {
 } from '@mui/material';
 import { useState, useEffect } from 'react';
 
-const DialogDeleteData = ({ show, hideModal, data, source }) => {
+const DialogDeleteData = ({ show, hideDialog, data, source }) => {
   const [open, setOpen] = useState(false);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => {
     setOpen(false);
-    hideModal();
+    hideDialog();
   };
 
   useEffect(() => {

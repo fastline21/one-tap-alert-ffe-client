@@ -7,6 +7,7 @@ import {
   EMERGENCIES_CLEAR_RESPONSE,
   GET_ALL_EMERGENCIES,
   GET_EMERGENCY,
+  CLEAR_EMERGENCY,
 } from 'Services/Types/emergencies.type';
 
 const setLoading = () => (dispatch) => {
@@ -29,7 +30,7 @@ export const getCurrentEmergencies = (data) => async (dispatch) => {
     const res = await axios.post(
       '/api/emergencies/current-emergencies',
       data,
-      config
+      config,
     );
 
     dispatch({
@@ -67,7 +68,6 @@ export const getEmergency = (data) => async (dispatch) => {
     };
 
     const res = await axios.get(`/api/emergencies/${data}`, config);
-    console.log('Success - Emergency:', JSON.stringify(res.data) || res.data);
 
     dispatch({
       type: GET_EMERGENCY,
@@ -83,4 +83,10 @@ export const getEmergency = (data) => async (dispatch) => {
       },
     });
   }
+};
+
+export const clearEmergency = () => (dispatch) => {
+  dispatch({
+    type: CLEAR_EMERGENCY,
+  });
 };

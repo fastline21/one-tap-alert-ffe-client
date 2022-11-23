@@ -84,17 +84,22 @@ const TableData = ({
                           {element.user.middle_initial}.{' '}
                           {element.user.last_name}
                         </TableCell>
-                        <TableCell>
-                          {element.responder.first_name}{' '}
-                          {element.responder.middle_initial}.{' '}
-                          {element.responder.last_name}
-                        </TableCell>
+                        {element.responder ? (
+                          <TableCell>
+                            {element.responder.first_name}{' '}
+                            {element.responder.middle_initial}.{' '}
+                            {element.responder.last_name}
+                          </TableCell>
+                        ) : (
+                          <TableCell>Not available</TableCell>
+                        )}
                         <TableCell>{element.emergency_type.name}</TableCell>
+                        <TableCell>{element.emergency_status.name}</TableCell>
                       </>
                     )}
                     <TableCell>
                       {moment(element.date_added).format(
-                        'MMMM DD, YYYY - h:mm:ss A'
+                        'MMMM DD, YYYY - h:mm:ss A',
                       )}
                     </TableCell>
                     <TableCell>

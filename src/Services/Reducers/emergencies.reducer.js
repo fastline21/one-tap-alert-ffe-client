@@ -5,6 +5,7 @@ import {
   EMERGENCIES_CLEAR_RESPONSE,
   GET_ALL_EMERGENCIES,
   GET_EMERGENCY,
+  CLEAR_EMERGENCY,
 } from 'Services/Types/emergencies.type';
 
 const initialState = {
@@ -29,7 +30,7 @@ export default (state = initialState, action) => {
     case GET_EMERGENCY:
       return {
         ...state,
-        emergency: action.payload.emergency,
+        emergency: action.payload,
         loading: false,
         success: true,
       };
@@ -60,6 +61,11 @@ export default (state = initialState, action) => {
         success: false,
         error: false,
         message: null,
+      };
+    case CLEAR_EMERGENCY:
+      return {
+        ...state,
+        emergency: null,
       };
     default:
       return state;

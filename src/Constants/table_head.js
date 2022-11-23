@@ -11,6 +11,7 @@ export const EMERGENCIES_HEAD = [
   'User',
   'Responder',
   'Type',
+  'Status',
   'Date Created',
   'Action',
 ];
